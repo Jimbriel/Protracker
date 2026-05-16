@@ -34,8 +34,8 @@ class EmptyState extends StatelessWidget {
 class _FolderPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final folderColor = const Color(0xFFB8C8F0);
-    final folderDark = const Color(0xFFA0B4E8);
+    final folderColor = AppColors.primary.withValues(alpha: 0.22);
+    final folderDark = AppColors.secondary.withValues(alpha: 0.26);
     final paint = Paint()..style = PaintingStyle.fill;
 
     // folder body
@@ -56,7 +56,7 @@ class _FolderPainter extends CustomPainter {
 
     // paper falling
     final paperPaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.7)
+      ..color = Colors.white.withValues(alpha: 0.82)
       ..style = PaintingStyle.fill;
     final paper = RRect.fromRectAndRadius(
       Rect.fromLTWH(

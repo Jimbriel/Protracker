@@ -9,8 +9,15 @@ class AppTheme {
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColors.primary,
         primary: AppColors.primary,
-        secondary: AppColors.accent,
+        secondary: AppColors.secondary,
+        tertiary: AppColors.accent,
+        error: AppColors.error,
         surface: AppColors.surface,
+        background: AppColors.background,
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onSurface: AppColors.textPrimary,
+        onError: Colors.white,
       ),
       scaffoldBackgroundColor: AppColors.background,
       textTheme: GoogleFonts.interTextTheme().copyWith(
@@ -80,7 +87,7 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: false,
         labelStyle: GoogleFonts.inter(
-          color: AppColors.primary,
+          color: AppColors.textSecondary,
           fontSize: 14,
         ),
         hintStyle: GoogleFonts.inter(
@@ -112,7 +119,7 @@ class AppTheme {
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return AppColors.primary.withValues(alpha: 0.4);
+            return AppColors.secondary.withValues(alpha: 0.35);
           }
           return AppColors.cardBorder;
         }),
@@ -122,7 +129,7 @@ class AppTheme {
         elevation: 8,
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.secondary,
         foregroundColor: Colors.white,
         elevation: 4,
       ),

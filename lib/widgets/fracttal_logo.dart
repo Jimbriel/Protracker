@@ -21,7 +21,7 @@ class FracttalLogo extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: 'FRACTTAL ',
+                  text: 'PRO ',
                   style: GoogleFonts.inter(
                     fontSize: size * 0.72,
                     fontWeight: FontWeight.w800,
@@ -30,11 +30,11 @@ class FracttalLogo extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: 'ONE',
+                  text: 'tracker',
                   style: GoogleFonts.inter(
                     fontSize: size * 0.72,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.primary,
+                    color: AppColors.secondary,
                     letterSpacing: 0.5,
                   ),
                 ),

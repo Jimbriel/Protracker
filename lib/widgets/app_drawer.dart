@@ -125,15 +125,15 @@ class _AppDrawerState extends State<AppDrawer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const FracttalLogo(size: 28),
-          const SizedBox(height: 6),
-          Padding(
-            padding: const EdgeInsets.only(left: 4),
-            child: Text(
-              'Versión: 5.5.04',
-              style: GoogleFonts.inter(
-                fontSize: 12,
-                color: AppColors.textSecondary,
+           const FracttalLogo(size: 28),
+           const SizedBox(height: 6),
+           Padding(
+             padding: const EdgeInsets.only(left: 4),
+             child: Text(
+               'PRO tracker • Versión: 5.5.04',
+               style: GoogleFonts.inter(
+                 fontSize: 12,
+                 color: AppColors.textSecondary,
               ),
             ),
           ),

@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 36),
               Center(
                 child: Text(
-                  'Ingrese sus datos para iniciar sesión',
+                  'Ingresa tus datos para iniciar sesión en PRO tracker',
                   style: GoogleFonts.inter(
                     fontSize: 15,
                     color: AppColors.textSecondary,
@@ -241,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   alignment: WrapAlignment.center,
                   children: [
                     Text(
-                      'Al iniciar sesión en Fracttal Ud. está aceptando ',
+                          'Al iniciar sesión en PRO tracker estás aceptando ',
                       style: GoogleFonts.inter(
                         fontSize: 11,
                         color: AppColors.textSecondary,

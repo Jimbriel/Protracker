@@ -8,7 +8,7 @@ class FracttalApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Fracttal ONE',
+      title: 'PRO tracker',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       home: const LoginScreen(),

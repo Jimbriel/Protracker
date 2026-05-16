@@ -12,13 +12,13 @@ class AppBarActions extends StatelessWidget {
       children: [
         _CircleButton(
           icon: Icons.star_rounded,
-          color: AppColors.primary,
+          color: AppColors.accent,
           onTap: () {},
         ),
         const SizedBox(width: 8),
         _CircleButton(
           icon: Icons.notifications_rounded,
-          color: AppColors.primary,
+          color: AppColors.secondary,
           onTap: () => _showNotifications(context),
         ),
         const SizedBox(width: 4),
