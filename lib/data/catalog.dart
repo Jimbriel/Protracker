@@ -289,3 +289,4 @@ const kUsers = [
 ];
 
 const kJefaturaId = 'u-patricia';
+const kSupervisorId = 'u-roberto';

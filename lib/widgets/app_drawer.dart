@@ -2,23 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/app_colors.dart';
 import '../data/demo_store.dart';
-import '../widgets/app_logo.dart';
+import '../models/cleaning_models.dart';
 import '../screens/dashboard_screen.dart';
+import '../screens/login_screen.dart';
+import '../screens/role_home.dart';
 import '../screens/tasks_screen.dart';
+import '../widgets/app_logo.dart';
 
-class AppDrawer extends StatefulWidget {
+class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
-  @override
-  State<AppDrawer> createState() => _AppDrawerState();
-}
-
-class _AppDrawerState extends State<AppDrawer> {
-  bool _catalogosExpanded = true;
-  bool _tareasExpanded = true;
+  void _goTo(BuildContext context, Widget screen) {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => screen),
+      (_) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final store = DemoStore.instance;
+    final user = store.currentUser;
+    final isManager = user != null && user.role != UserRole.operario;
+
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.82,
       child: SafeArea(
@@ -29,57 +35,46 @@ class _AppDrawerState extends State<AppDrawer> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
-                  _buildLogoSection(),
-                  _buildQuickActions(context),
-                  const SizedBox(height: 8),
-                  _buildSection(
-                    label: 'Catálogo',
-                    expanded: _catalogosExpanded,
-                    onTap: () => setState(
-                      () => _catalogosExpanded = !_catalogosExpanded,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const AppLogo(size: 28),
+                        if (user != null) ...[
+                          const SizedBox(height: 16),
+                          _UserCard(user: user),
+                        ],
+                      ],
                     ),
-                    children: [
-                      _DrawerItem(
-                        icon: Icons.person_outline_rounded,
-                        label: 'Personal',
-                        onTap: () => Navigator.pop(context),
-                      ),
-                    ],
                   ),
-                  _buildSection(
-                    label: 'Tareas',
-                    expanded: _tareasExpanded,
-                    onTap: () => setState(
-                      () => _tareasExpanded = !_tareasExpanded,
+                  if (user != null)
+                    _DrawerItem(
+                      icon: Icons.home_outlined,
+                      label: 'Inicio',
+                      onTap: () => _goTo(context, homeFor(user)),
                     ),
-                    children: [
-                      _DrawerItem(
-                        icon: Icons.assignment_outlined,
-                        label: 'Plan de Tareas',
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const TasksScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                  if (isManager)
+                    _DrawerItem(
+                      icon: Icons.insights_outlined,
+                      label: 'Dashboard',
+                      onTap: () => _goTo(context, const DashboardScreen()),
+                    ),
+                  _DrawerItem(
+                    icon: Icons.calendar_month_outlined,
+                    label: 'Plan de Tareas',
+                    onTap: () => _goTo(context, const TasksScreen()),
                   ),
-                  const SizedBox(height: 8),
+                  const Divider(height: 24),
                   _DrawerItem(
                     icon: Icons.restart_alt_rounded,
                     label: 'Restablecer demo',
                     onTap: () async {
                       final navigator = Navigator.of(context);
                       final messenger = ScaffoldMessenger.of(context);
-                      await DemoStore.instance.reset();
+                      await store.reset();
                       navigator.pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (_) => const DashboardScreen(),
-                        ),
+                        MaterialPageRoute(builder: (_) => const LoginScreen()),
                         (_) => false,
                       );
                       messenger.showSnackBar(
@@ -87,180 +82,83 @@ class _AppDrawerState extends State<AppDrawer> {
                       );
                     },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
-                    ),
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Text(
-                        'Ayuda',
-                        style: GoogleFonts.inter(
-                          fontSize: 15,
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
+                  _DrawerItem(
+                    icon: Icons.logout_rounded,
+                    label: 'Cerrar sesión',
+                    onTap: () async {
+                      final navigator = Navigator.of(context);
+                      await store.signOut();
+                      navigator.pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (_) => const LoginScreen()),
+                        (_) => false,
+                      );
+                    },
                   ),
                 ],
               ),
             ),
-            _buildBuildInfo(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+              child: Text(
+                'PRO tracker • Demo v0.1.0',
+                style: GoogleFonts.inter(fontSize: 11, color: AppColors.textHint),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildLogoSection() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-           const AppLogo(size: 28),
-           const SizedBox(height: 6),
-           Padding(
-             padding: const EdgeInsets.only(left: 4),
-             child: Text(
-               'PRO tracker • Versión: 0.1.0',
-               style: GoogleFonts.inter(
-                 fontSize: 12,
-                 color: AppColors.textSecondary,
-              ),
-            ),
-          ),
-        ],
+class _UserCard extends StatelessWidget {
+  final AppUser user;
+  const _UserCard({required this.user});
+
+  @override
+  Widget build(BuildContext context) {
+    final role = user.shift == null
+        ? user.role.label
+        : '${user.role.label} · Turno ${user.shift}';
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.iconBg,
+        borderRadius: BorderRadius.circular(12),
       ),
-    );
-  }
-
-  Widget _buildQuickActions(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Row(
         children: [
-          _QuickAction(
-            icon: Icons.qr_code_scanner_rounded,
-            onTap: () {},
+          CircleAvatar(
+            backgroundColor: AppColors.primary,
+            child: Text(
+              user.name[0],
+              style: const TextStyle(color: Colors.white),
+            ),
           ),
-          const SizedBox(width: 16),
-          _QuickAction(
-            icon: Icons.home_outlined,
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const DashboardScreen()),
-              );
-            },
-          ),
-          const SizedBox(width: 16),
-          _QuickAction(
-            icon: Icons.cloud_off_outlined,
-            onTap: () {},
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSection({
-    required String label,
-    required bool expanded,
-    required VoidCallback onTap,
-    required List<Widget> children,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Row(
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Text(
-                    label,
-                    style: GoogleFonts.inter(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textSecondary,
-                    ),
+                Text(
+                  user.name,
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
                   ),
                 ),
-                Icon(
-                  expanded
-                      ? Icons.keyboard_arrow_up_rounded
-                      : Icons.keyboard_arrow_down_rounded,
-                  color: AppColors.textSecondary,
-                  size: 20,
+                Text(
+                  role,
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
                 ),
               ],
             ),
           ),
-        ),
-        if (expanded)
-          Container(
-            margin: const EdgeInsets.only(left: 20),
-            decoration: const BoxDecoration(
-              border: Border(
-                left: BorderSide(color: AppColors.divider, width: 2),
-              ),
-            ),
-            child: Column(children: children),
-          ),
-      ],
-    );
-  }
-
-  Widget _buildBuildInfo() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text(
-            'Demo v0.1.0',
-            style: GoogleFonts.inter(
-              fontSize: 11,
-              color: AppColors.textHint,
-            ),
-          ),
-          Text(
-            'PRO tracker',
-            style: GoogleFonts.inter(
-              fontSize: 11,
-              color: AppColors.textHint,
-            ),
-          ),
         ],
-      ),
-    );
-  }
-}
-
-class _QuickAction extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onTap;
-
-  const _QuickAction({required this.icon, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 52,
-        height: 52,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: AppColors.iconBg,
-        ),
-        child: Icon(icon, color: AppColors.primary, size: 24),
       ),
     );
   }

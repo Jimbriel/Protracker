@@ -1,3 +1,5 @@
+const kTextSignaturePrefix = 'text:';
+
 enum UserRole { operario, jefatura, supervisor }
 
 extension UserRoleLabel on UserRole {
@@ -118,9 +120,11 @@ class CleaningActivity {
   /// Una entrada por paso del equipo: true si se realizó.
   final List<bool> stepsDone;
   final String observations;
-  final List<String> photoPaths;
+  /// Fotos de evidencia en base64.
+  final List<String> photos;
 
-  /// Firmas en base64, por clave: operario, jefatura, supervisor.
+  /// Firmas por clave (operario, jefatura, supervisor). El valor es un PNG en
+  /// base64 si se dibujó, o `text:<nombre>` si es la firma registrada.
   final Map<String, String> signatures;
 
   const CleaningActivity({
@@ -136,7 +140,7 @@ class CleaningActivity {
     this.finishedAt,
     this.stepsDone = const [],
     this.observations = '',
-    this.photoPaths = const [],
+    this.photos = const [],
     this.signatures = const {},
   });
 
@@ -158,7 +162,7 @@ class CleaningActivity {
     DateTime? finishedAt,
     List<bool>? stepsDone,
     String? observations,
-    List<String>? photoPaths,
+    List<String>? photos,
     Map<String, String>? signatures,
     String? assignedToId,
   }) {
@@ -175,7 +179,7 @@ class CleaningActivity {
       finishedAt: finishedAt ?? this.finishedAt,
       stepsDone: stepsDone ?? this.stepsDone,
       observations: observations ?? this.observations,
-      photoPaths: photoPaths ?? this.photoPaths,
+      photos: photos ?? this.photos,
       signatures: signatures ?? this.signatures,
     );
   }
@@ -193,7 +197,7 @@ class CleaningActivity {
         'finishedAt': finishedAt?.toIso8601String(),
         'stepsDone': stepsDone,
         'observations': observations,
-        'photoPaths': photoPaths,
+        'photos': photos,
         'signatures': signatures,
       };
 
@@ -212,7 +216,7 @@ class CleaningActivity {
       finishedAt: parse(j['finishedAt']),
       stepsDone: (j['stepsDone'] as List).cast<bool>(),
       observations: j['observations'] as String? ?? '',
-      photoPaths: (j['photoPaths'] as List).cast<String>(),
+      photos: (j['photos'] as List).cast<String>(),
       signatures: (j['signatures'] as Map).cast<String, String>(),
     );
   }

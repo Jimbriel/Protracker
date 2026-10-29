@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/cleaning_models.dart';
+import 'activity_rules.dart';
 import 'catalog.dart';
 import 'seed_history.dart';
 
@@ -14,7 +15,7 @@ class DemoStore extends ChangeNotifier {
 
   static final DemoStore instance = DemoStore._();
 
-  static const _activitiesKey = 'demo.activities.v1';
+  static const _activitiesKey = 'demo.activities.v2';
   static const _userKey = 'demo.currentUser.v1';
 
   SharedPreferences? _prefs;
@@ -107,6 +108,82 @@ class DemoStore extends ChangeNotifier {
     _activities[i] = activity;
     await _save();
     notifyListeners();
+  }
+
+  CleaningActivity? activityById(String id) {
+    for (final a in _activities) {
+      if (a.id == id) return a;
+    }
+    return null;
+  }
+
+  /// Operario: inicia el cronómetro de la actividad.
+  Future<void> start(String id, {DateTime? now}) async {
+    final a = activityById(id);
+    if (a == null || a.status != ActivityStatus.pending) return;
+    await update(a.copyWith(
+      status: ActivityStatus.inProgress,
+      startedAt: now ?? DateTime.now(),
+    ));
+  }
+
+  /// Operario: cierra la actividad. Devuelve lo que falta; vacío si se cerró.
+  Future<List<String>> finish(String id, {DateTime? now}) async {
+    final a = activityById(id);
+    if (a == null) return ['La actividad ya no existe'];
+    final missing = missingToFinish(a);
+    if (missing.isNotEmpty) return missing;
+    await update(a.copyWith(
+      status: ActivityStatus.completed,
+      finishedAt: now ?? DateTime.now(),
+    ));
+    return const [];
+  }
+
+  /// Supervisor: valida y firma una actividad terminada.
+  Future<void> validate(String id, String signature) async {
+    final a = activityById(id);
+    if (a == null || a.status != ActivityStatus.completed) return;
+    await update(a.copyWith(
+      status: ActivityStatus.validated,
+      signatures: {...a.signatures, 'supervisor': signature},
+    ));
+  }
+
+  /// Jefatura: cambia a quién está asignada una actividad no iniciada.
+  Future<void> reassign(String id, String operatorId) async {
+    final a = activityById(id);
+    if (a == null || a.status != ActivityStatus.pending) return;
+    await update(a.copyWith(assignedToId: operatorId));
+  }
+
+  /// Jefatura: crea una limpieza de emergencia para hoy.
+  Future<CleaningActivity> addEmergency({
+    required String equipmentId,
+    required String operatorId,
+    required AppUser assignedBy,
+    DateTime? now,
+  }) async {
+    final at = now ?? DateTime.now();
+    final operator = userById(operatorId)!;
+    final equipment = equipmentById(equipmentId);
+    final activity = CleaningActivity(
+      id: 'em-${at.millisecondsSinceEpoch}-$equipmentId',
+      equipmentId: equipmentId,
+      date: DateTime(at.year, at.month, at.day),
+      type: CleaningType.emergency,
+      shift: operator.shift ?? '',
+      assignedToId: operatorId,
+      assignedById: assignedBy.id,
+      stepsDone: List.filled(equipment.steps.length, false),
+      signatures: {
+        'jefatura': '$kTextSignaturePrefix${assignedBy.name}',
+      },
+    );
+    _activities.add(activity);
+    await _save();
+    notifyListeners();
+    return activity;
   }
 
   // Persistencia

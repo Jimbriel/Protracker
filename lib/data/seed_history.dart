@@ -52,6 +52,7 @@ List<CleaningActivity> buildSeedHistory(DateTime now) {
             assignedToId: operator.id,
             assignedById: kJefaturaId,
             stepsDone: List.filled(equipment.steps.length, false),
+            signatures: {'jefatura': _textSignature(kJefaturaId)},
           );
           activities.add(
             back == 0 ? base : _completePast(base, equipment, shift, rng, back),
@@ -85,6 +86,11 @@ CleaningActivity _completePast(
   // Lo más reciente puede seguir esperando validación del supervisor.
   final awaiting = daysBack <= 2 && roll >= 0.60;
   return base.copyWith(
+    signatures: {
+      ...base.signatures,
+      'operario': _textSignature(base.assignedToId),
+      if (!awaiting) 'supervisor': _textSignature(kSupervisorId),
+    },
     status: awaiting ? ActivityStatus.completed : ActivityStatus.validated,
     startedAt: start,
     finishedAt: end,
@@ -92,6 +98,9 @@ CleaningActivity _completePast(
     observations: steps.contains(false) ? 'Paso omitido por falta de tiempo.' : '',
   );
 }
+
+String _textSignature(String userId) =>
+    '$kTextSignaturePrefix${kUsers.firstWhere((u) => u.id == userId).name}';
 
 String _ymd(DateTime d) =>
     '${d.year}${d.month.toString().padLeft(2, '0')}${d.day.toString().padLeft(2, '0')}';
