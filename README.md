@@ -38,7 +38,7 @@ El código base viene de un clon visual de Fracttal ONE (sistema de mantenimient
 
 Reutilizable: tema visual, drawer, tarjetas de KPI, gráficas y estructura de navegación.
 
-Fases 0 y 1 completadas. Fase 1: modelos, catálogo de Dieta (10 equipos, 3 turnos A/B/H, 7 usuarios ficticios), historial de 28 días generado, `DemoStore` con persistencia y botón "Restablecer demo"; los indicadores del dashboard ya leen esos datos. Los códigos de frecuencia y la asignación de equipos a turnos son **supuestos** (ver `lib/data/catalog.dart`). Fase 0 (plataformas web y Android, renombrado, limpieza de Fracttal, `flutter analyze` y `flutter test` sin errores).
+Fases 0, 1 y 2 completadas. Fase 2: login por usuario con vistas por rol (operario, jefatura, supervisor), ejecución de actividades con cronómetro, checklist, fotos (cámara, galería o foto de muestra) y firma dibujada, reporte completo, validación del supervisor, reasignación y limpiezas de emergencia. Fase 1: modelos, catálogo de Dieta (10 equipos, 3 turnos A/B/H, 7 usuarios ficticios), historial de 28 días generado, `DemoStore` con persistencia y botón "Restablecer demo"; los indicadores del dashboard ya leen esos datos. Los códigos de frecuencia y la asignación de equipos a turnos son **supuestos** (ver `lib/data/catalog.dart`). Fase 0 (plataformas web y Android, renombrado, limpieza de Fracttal, `flutter analyze` y `flutter test` sin errores).
 
 Deuda técnica conocida:
 
@@ -64,12 +64,12 @@ Deuda técnica conocida:
 - [x] Botón "Restablecer demo".
 
 ### Fase 2: flujo central
-- [ ] Login por usuario, con acceso como operario, jefatura o supervisor.
-- [ ] "Mis tareas de hoy", filtradas por turno.
-- [ ] Detalle de actividad: cronómetro, utensilios y químicos, checklist con observaciones, fotos y firma del operario.
-- [ ] Vista de jefatura: asignar tareas.
-- [ ] Vista de supervisor: validar y firmar.
-- [ ] Reporte final de la actividad con todos los campos.
+- [x] Login por usuario, con acceso como operario, jefatura o supervisor.
+- [x] "Mis tareas de hoy", filtradas por turno.
+- [x] Detalle de actividad: cronómetro, utensilios y químicos, checklist con observaciones, fotos y firma del operario.
+- [x] Vista de jefatura: asignar tareas.
+- [x] Vista de supervisor: validar y firmar.
+- [x] Reporte final de la actividad con todos los campos.
 
 ### Fase 3: calendario y horarios
 - [ ] Calendario por persona y turno.
