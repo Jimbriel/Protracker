@@ -16,9 +16,9 @@ class TasksScreen extends StatefulWidget {
 class _TasksScreenState extends State<TasksScreen> {
   int _viewMode = 1; // 0=kanban, 1=calendar, 2=list, 3=clipboard
   DateTime _selectedDate = DateTime.now();
-  String _category = 'General';
+  String _category = 'Diaria';
 
-  final _categories = ['General', 'Preventivo', 'Correctivo', 'Predictivo'];
+  final _categories = ['Diaria', 'Semanal', 'Profunda', 'Emergencia'];
 
   @override
   Widget build(BuildContext context) {
