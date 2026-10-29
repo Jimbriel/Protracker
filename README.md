@@ -38,7 +38,7 @@ El código base viene de un clon visual de Fracttal ONE (sistema de mantenimient
 
 Reutilizable: tema visual, drawer, tarjetas de KPI, gráficas y estructura de navegación.
 
-Fase 0 completada (plataformas web y Android, renombrado, limpieza de Fracttal, `flutter analyze` y `flutter test` sin errores).
+Fases 0 y 1 completadas. Fase 1: modelos, catálogo de Dieta (10 equipos, 3 turnos A/B/H, 7 usuarios ficticios), historial de 28 días generado, `DemoStore` con persistencia y botón "Restablecer demo"; los indicadores del dashboard ya leen esos datos. Los códigos de frecuencia y la asignación de equipos a turnos son **supuestos** (ver `lib/data/catalog.dart`). Fase 0 (plataformas web y Android, renombrado, limpieza de Fracttal, `flutter analyze` y `flutter test` sin errores).
 
 Deuda técnica conocida:
 
@@ -58,10 +58,10 @@ Deuda técnica conocida:
 - [x] Quitar los elementos de Fracttal que no aplican.
 
 ### Fase 1: datos simulados
-- [ ] Modelos: usuario (con rol), turno, área, equipo, actividad, checklist, químico y registro de limpieza.
-- [ ] Datos de ejemplo del área de Dietas, 3 o 4 turnos y unos 5 usuarios.
-- [ ] Servicio en memoria con persistencia en `shared_preferences`.
-- [ ] Botón "Restablecer demo".
+- [x] Modelos: usuario (con rol), turno, área, equipo, actividad, checklist, químico y registro de limpieza.
+- [x] Datos de ejemplo del área de Dietas, 3 o 4 turnos y unos 5 usuarios.
+- [x] Servicio en memoria con persistencia en `shared_preferences`.
+- [x] Botón "Restablecer demo".
 
 ### Fase 2: flujo central
 - [ ] Login por usuario, con acceso como operario, jefatura o supervisor.

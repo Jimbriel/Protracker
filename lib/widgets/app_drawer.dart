@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/app_colors.dart';
+import '../data/demo_store.dart';
 import '../widgets/app_logo.dart';
 import '../screens/dashboard_screen.dart';
 import '../screens/tasks_screen.dart';
@@ -68,6 +69,24 @@ class _AppDrawerState extends State<AppDrawer> {
                     ],
                   ),
                   const SizedBox(height: 8),
+                  _DrawerItem(
+                    icon: Icons.restart_alt_rounded,
+                    label: 'Restablecer demo',
+                    onTap: () async {
+                      final navigator = Navigator.of(context);
+                      final messenger = ScaffoldMessenger.of(context);
+                      await DemoStore.instance.reset();
+                      navigator.pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (_) => const DashboardScreen(),
+                        ),
+                        (_) => false,
+                      );
+                      messenger.showSnackBar(
+                        const SnackBar(content: Text('Demo restablecida')),
+                      );
+                    },
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 20,
