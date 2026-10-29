@@ -13,7 +13,6 @@ class AppTheme {
         tertiary: AppColors.accent,
         error: AppColors.error,
         surface: AppColors.surface,
-        background: AppColors.background,
         onPrimary: Colors.white,
         onSecondary: Colors.white,
         onSurface: AppColors.textPrimary,

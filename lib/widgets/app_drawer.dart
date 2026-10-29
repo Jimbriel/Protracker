@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/app_colors.dart';
-import '../widgets/fracttal_logo.dart';
+import '../widgets/app_logo.dart';
 import '../screens/dashboard_screen.dart';
 import '../screens/tasks_screen.dart';
-import '../screens/work_orders_screen.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
@@ -33,20 +32,15 @@ class _AppDrawerState extends State<AppDrawer> {
                   _buildQuickActions(context),
                   const SizedBox(height: 8),
                   _buildSection(
-                    label: 'Catálogos',
+                    label: 'Catálogo',
                     expanded: _catalogosExpanded,
                     onTap: () => setState(
                       () => _catalogosExpanded = !_catalogosExpanded,
                     ),
                     children: [
                       _DrawerItem(
-                        icon: Icons.layers_outlined,
-                        label: 'Activos',
-                        onTap: () => Navigator.pop(context),
-                      ),
-                      _DrawerItem(
                         icon: Icons.person_outline_rounded,
-                        label: 'Recursos Humanos',
+                        label: 'Personal',
                         onTap: () => Navigator.pop(context),
                       ),
                     ],
@@ -70,24 +64,6 @@ class _AppDrawerState extends State<AppDrawer> {
                             ),
                           );
                         },
-                      ),
-                      _DrawerItem(
-                        icon: Icons.content_paste_outlined,
-                        label: 'Órdenes de Trabajo',
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const WorkOrdersScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      _DrawerItem(
-                        icon: Icons.shield_outlined,
-                        label: 'Compliance y seguridad',
-                        onTap: () => Navigator.pop(context),
                       ),
                     ],
                   ),
@@ -125,12 +101,12 @@ class _AppDrawerState extends State<AppDrawer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           const FracttalLogo(size: 28),
+           const AppLogo(size: 28),
            const SizedBox(height: 6),
            Padding(
              padding: const EdgeInsets.only(left: 4),
              child: Text(
-               'PRO tracker • Versión: 5.5.04',
+               'PRO tracker • Versión: 0.1.0',
                style: GoogleFonts.inter(
                  fontSize: 12,
                  color: AppColors.textSecondary,
@@ -229,14 +205,14 @@ class _AppDrawerState extends State<AppDrawer> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            'Commit: de803fa',
+            'Demo v0.1.0',
             style: GoogleFonts.inter(
               fontSize: 11,
               color: AppColors.textHint,
             ),
           ),
           Text(
-            'BuiltTime: 2026-05-05 14:05',
+            'PRO tracker',
             style: GoogleFonts.inter(
               fontSize: 11,
               color: AppColors.textHint,

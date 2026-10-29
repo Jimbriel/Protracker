@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/app_colors.dart';
-import '../widgets/fracttal_logo.dart';
+import '../widgets/app_logo.dart';
 import 'dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 24),
-              const Center(child: FracttalLogo(size: 38)),
+              const Center(child: AppLogo(size: 38)),
               const SizedBox(height: 36),
               Center(
                 child: Text(
