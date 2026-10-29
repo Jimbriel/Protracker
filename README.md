@@ -1,114 +1,77 @@
 # PRO tracker
 
-Aplicación móvil (demo) para el **control y registro de limpieza en las áreas de cocina**: limpiezas diarias, semanales (profundas) y de emergencia, con historial, evidencia fotográfica y firmas de validación.
+Demo de una aplicación móvil para el **control y registro de limpieza en las áreas de cocina** (limpiezas diarias, semanales, profundas y de emergencia), con cronómetro, checklist, fotos de evidencia, firmas digitales, reportes y estadísticas.
 
-> **Naturaleza del proyecto:** demo para presentar a clientes potenciales. No tiene backend: los datos son simulados y se guardan en el dispositivo. El objetivo es que se vea y se sienta como una app real.
+> **Es una demo.** No tiene servidor: los datos son de ejemplo (área de Dieta, nombres ficticios) y se guardan solo en el navegador o dispositivo de quien la usa.
 
-## Objetivo
+- **Abrir la demo:** https://jimbriel.github.io/Protracker/ (en el celular, usar "Agregar a pantalla de inicio" para verla como app).
+- **Plan, estado y pendientes del proyecto:** [docs/PLAN_PROYECTO.md](docs/PLAN_PROYECTO.md)
+- **Datos reales del área de Dieta usados como base:** [docs/referencia_area_dieta.md](docs/referencia_area_dieta.md)
 
-Mostrar, de punta a punta, cómo el personal de cocina ejecuta sus tareas de limpieza y cómo la jefatura y la supervisión las asignan, validan y analizan.
+## Guía de uso de la demo
 
-Requerimientos funcionales (según el documento "Proyecto para el área de limpieza"):
+### 1. Entrar
+1. En la pantalla de login escribe cualquier texto en **Email** y toca **Siguiente** (no se valida).
+2. Elige con qué usuario entrar. Cada rol ve una parte distinta del flujo:
 
-1. **Gestión de usuarios** y asignación de tareas por área o turno.
-2. **Firmas digitales** al terminar cada actividad: quien la realizó, la jefatura que la asignó y el supervisor que la valida.
-3. **Calendario** de actividades por persona o turno.
-4. **Cronómetro** con hora de inicio y fin de cada actividad.
-5. **Carga del horario mensual** del personal (persona × día = turno).
-6. **Turnos identificados por letra**, cada uno con actividades específicas (pisos, paredes, cortinas, refrigeradores, etc.). Cada actividad se registra por separado.
-7. **Tareas del día** visibles al ingresar, según el turno; al terminar cada una se solicitan **fotos de evidencia**.
-8. **Reportes** con: fecha, hora de inicio y fin, tipo de actividad, área, frecuencia, utensilios, productos químicos y concentración, checklist de pasos (hecho / no hecho), observaciones, fotos y firmas.
-9. **Informes estadísticos** semanales y mensuales, en gráficos o tablas: limpiezas por área, cumplimiento, frecuencia (diaria / semanal / profunda), completadas vs. pendientes y tiempo promedio por actividad.
+| Usuario | Rol | Qué hace |
+|---|---|---|
+| Carlos Méndez, Marta Salazar | Operario, turno H | Limpia pisos, paredes y refrigeradora |
+| Ana Rivera, Diego Paz | Operario, turno A | Limpia mesas, bachas y rejillas |
+| Luis Ortega | Operario, turno B | Limpia purificador, tumbados, iluminarias y vidrios |
+| Patricia Gómez | Jefatura | Asigna tareas y crea emergencias |
+| Roberto Vega | Supervisor | Valida y firma las limpiezas |
 
-## Estado actual
+Para cambiar de usuario: menú (☰) → **Cerrar sesión**.
 
-El código base viene de un clon visual de Fracttal ONE (sistema de mantenimiento) y **todavía no implementa ninguna función de limpieza**.
+### 2. Recorrido sugerido (unos 5 minutos)
 
-| Requerimiento | Estado |
-|---|---|
-| 1. Usuarios | Pendiente (el login es solo visual) |
-| 2. Firmas digitales | Pendiente |
-| 3. Calendario | Pendiente (la pantalla muestra un estado vacío) |
-| 4. Cronómetro | Pendiente |
-| 5. Horario mensual | Pendiente |
-| 6. Turnos y actividades | Pendiente |
-| 7. Tareas del día y fotos | Pendiente |
-| 8. Reportes | Pendiente |
-| 9. Estadísticas | Pendiente (hay gráficas de ejemplo con `fl_chart` para reutilizar) |
+**A. Operario (entra como Carlos Méndez)**
+1. En **Mis tareas** aparecen las tareas del día según su turno, una barra de avance y las tareas atrasadas.
+2. Abre **Pisos** y toca **Iniciar**: el cronómetro empieza a correr.
+3. Revisa los productos con su concentración, los utensilios, el EPI y los puntos de atención.
+4. Marca los pasos del checklist. Deja alguno sin marcar para ver que pide una **observación** obligatoria.
+5. En **Evidencia fotográfica** toca **Agregar foto**: *Tomar foto* (cámara del celular), *Elegir de la galería* o **Usar foto de muestra** (para equipos sin cámara).
+6. En **Firma del operario** toca **Firmar** y dibuja la firma con el dedo o el mouse.
+7. Toca **Finalizar actividad**. Si falta algo, la app lista exactamente qué. Al terminar se abre el **reporte** completo.
 
-Reutilizable: tema visual, drawer, tarjetas de KPI, gráficas y estructura de navegación.
+**B. Supervisor (cierra sesión y entra como Roberto Vega)**
+1. En **Validación → Por validar** aparece la limpieza de Carlos.
+2. Ábrela: el reporte muestra fecha, horas, duración, tipo, área, frecuencia, utensilios, químicos, checklist (✔ / ✘), observaciones, fotos y firmas.
+3. Toca **Validar y firmar** y dibuja la firma. La limpieza pasa a **Validadas** con las tres firmas (operario, jefatura y supervisor).
 
-Fases 0, 1 y 2 completadas. Fase 2: login por usuario con vistas por rol (operario, jefatura, supervisor), ejecución de actividades con cronómetro, checklist, fotos (cámara, galería o foto de muestra) y firma dibujada, reporte completo, validación del supervisor, reasignación y limpiezas de emergencia. Fase 1: modelos, catálogo de Dieta (10 equipos, 3 turnos A/B/H, 7 usuarios ficticios), historial de 28 días generado, `DemoStore` con persistencia y botón "Restablecer demo"; los indicadores del dashboard ya leen esos datos. Los códigos de frecuencia y la asignación de equipos a turnos son **supuestos** (ver `lib/data/catalog.dart`). Fase 0 (plataformas web y Android, renombrado, limpieza de Fracttal, `flutter analyze` y `flutter test` sin errores).
+**C. Jefatura (entra como Patricia Gómez)**
+1. En **Asignación** ve las tareas de hoy agrupadas por turno.
+2. Toca el ícono de flechas (⇄) de una tarea pendiente para **reasignarla** a otra persona del turno.
+3. Toca el botón rojo **Emergencia** para crear una limpieza de emergencia: elige equipo y persona. Aparece en las tareas de esa persona.
 
-Deuda técnica conocida:
+**D. Estadísticas y calendario (Jefatura o Supervisor)**
+1. Menú (☰) → **Dashboard**: cambia entre **Semana** y **Mes** para ver limpiezas realizadas, cumplimiento, pendientes, tiempo promedio, frecuencia de limpieza y cumplimiento por área y por equipo.
+2. Menú (☰) → **Plan de Tareas**, con cuatro vistas (botones de arriba):
+   - por estado, calendario, lista y **horario mensual** (persona × día con la letra del turno; `L` = libre).
+   - Toca un día en el calendario para ver sus actividades; los filtros separan diaria, semanal, profunda y emergencia.
 
-- El dashboard y el login siguen con datos y textos de ejemplo (gráfica `OtChartCard`); se reemplazan en las Fases 2 y 4.
+### 3. Antes de cada presentación
+- Menú (☰) → **Restablecer demo** deja todo como al inicio (tareas de hoy pendientes y la sesión cerrada).
+- La demo funciona mejor en el celular o con la ventana angosta del navegador.
+- Si algo se ve raro, recarga la página; los datos se conservan.
 
-## Plataforma de presentación
+## Limitaciones de la demo (decirlo al presentar)
+- Los datos y las personas son de ejemplo; no hay base de datos ni usuarios reales.
+- **Códigos de frecuencia y turnos son supuestos** pendientes de confirmar (DT/DX = diaria, S1 = semanal, ML = profunda; la asignación de equipos a los turnos A, B y H es de ejemplo).
+- **Cargar horario** no importa un archivo: el horario del mes ya viene de ejemplo.
+- Aún no se exportan reportes a PDF.
 
-- **Principal:** PWA publicada en GitHub Pages. Se abre con un enlace y en el celular se agrega a la pantalla de inicio para verse como app.
-- **Respaldo:** APK de Android, por si falla el internet durante la reunión.
-
-## Plan de actividades
-
-### Fase 0: base
-- [x] Habilitar plataformas web y Android (`flutter create .`).
-- [x] Renombrar el paquete y las clases a protracker.
-- [x] Reemplazar este README por defecto (hecho) y arreglar la prueba rota.
-- [x] Quitar los elementos de Fracttal que no aplican.
-
-### Fase 1: datos simulados
-- [x] Modelos: usuario (con rol), turno, área, equipo, actividad, checklist, químico y registro de limpieza.
-- [x] Datos de ejemplo del área de Dietas, 3 o 4 turnos y unos 5 usuarios.
-- [x] Servicio en memoria con persistencia en `shared_preferences`.
-- [x] Botón "Restablecer demo".
-
-### Fase 2: flujo central
-- [x] Login por usuario, con acceso como operario, jefatura o supervisor.
-- [x] "Mis tareas de hoy", filtradas por turno.
-- [x] Detalle de actividad: cronómetro, utensilios y químicos, checklist con observaciones, fotos y firma del operario.
-- [x] Vista de jefatura: asignar tareas.
-- [x] Vista de supervisor: validar y firmar.
-- [x] Reporte final de la actividad con todos los campos.
-
-### Fase 3: calendario y horarios
-- [ ] Calendario por persona y turno.
-- [ ] Carga del horario mensual (archivo precargado o cuadrícula editable).
-
-### Fase 4: estadísticas
-- [ ] Gráficas semanales y mensuales (por área, cumplimiento, frecuencia, pendientes, tiempo promedio).
-- [ ] Exportar reportes a PDF.
-
-### Fase 5: publicación
-- [ ] Manifiesto PWA (nombre, ícono, colores).
-- [ ] Publicar en GitHub Pages y generar el APK.
-- [ ] Ensayo completo de la demo en un celular real.
-
-## Forma de trabajo
-
-- **Por fases, en orden.** Cada fase termina con la app corriendo y sin errores antes de pasar a la siguiente.
-- **Prioridad:** lo que se ve en la presentación. El flujo de la Fase 2 es lo más importante; las Fases 3 y 4 pueden usar datos precargados.
-- **Git:** rama `main` estable; cada fase o función en una rama propia (`feat/...`) y commits pequeños en español, con mensaje claro. Se integra a `main` solo cuando funciona.
-- **Antes de cada commit:** `flutter analyze` y `flutter test` deben pasar.
-- **Claude Code** implementa; **Jimmy** revisa en pantalla, aporta el contenido real (equipos, checklists, químicos) y decide prioridades. Los cambios se muestran corriendo, no solo descritos.
-- **Contenido real vs. de ejemplo:** mientras no lleguen los datos reales del socio, se usan datos genéricos y ficticios, fáciles de reemplazar desde un solo archivo de datos.
-- **Cambios de alcance:** se anotan en este README para que el socio y el equipo vean lo mismo.
-
-## Ejecutar el proyecto
+## Para desarrolladores
 
 ```bash
 flutter pub get
 flutter run -d chrome
 ```
 
-## Contenido de referencia
+```bash
+flutter analyze
+flutter test
+```
 
-La tabla del área de Dieta (10 equipos con pasos, utensilios, químicos, puntos de atención y frecuencia) está transcrita en [docs/referencia_area_dieta.md](docs/referencia_area_dieta.md). Es la base de los datos de ejemplo.
-
-## Material pendiente del socio
-
-- Significado de los códigos de frecuencia (DT, DX, S1, ML, DT-1, LD-1).
-- Qué equipos corresponden a cada turno (por ejemplo, el turno H).
-- Concentración del sanitizante AC 10 DIQUAT.
-- Otras áreas de la cocina además de Dieta.
-- Ejemplo de un formato de reporte o bitácora actual, si existe.
+Publicación en GitHub Pages: compilar con `flutter build web --release --base-href /Protracker/` y publicar el contenido de `build/web` en la rama `gh-pages`.

@@ -15,7 +15,7 @@ class DemoStore extends ChangeNotifier {
 
   static final DemoStore instance = DemoStore._();
 
-  static const _activitiesKey = 'demo.activities.v2';
+  static const _activitiesKey = 'demo.activities.v3';
   static const _userKey = 'demo.currentUser.v1';
 
   SharedPreferences? _prefs;
