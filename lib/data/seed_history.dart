@@ -40,8 +40,15 @@ List<CleaningActivity> buildSeedHistory(DateTime now) {
       for (final eqId in shift.equipmentIds) {
         final index = kEquipment.indexWhere((e) => e.id == eqId);
         final equipment = kEquipment[index];
-        for (final type in scheduledTypes(equipment, date, index)) {
-          final operator = operators[(date.day + index) % operators.length];
+        // Hoy toca todo lo diario y lo semanal, para que la demo no se vea vacía.
+        final types = back == 0
+            ? equipment.frequencies.where((t) => t != CleaningType.deep).toList()
+            : scheduledTypes(equipment, date, index);
+        final position = shift.equipmentIds.indexOf(eqId);
+        for (final type in types) {
+          final operator = back == 0
+              ? operators[position % operators.length]
+              : operators[(date.day + index) % operators.length];
           final id = '${_ymd(date)}-$eqId-${type.name}';
           final base = CleaningActivity(
             id: id,
