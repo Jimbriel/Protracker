@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/app_colors.dart';
 
-class FracttalLogo extends StatelessWidget {
+class AppLogo extends StatelessWidget {
   final double size;
   final bool compact;
 
-  const FracttalLogo({super.key, this.size = 32, this.compact = false});
+  const AppLogo({super.key, this.size = 32, this.compact = false});
 
   @override
   Widget build(BuildContext context) {

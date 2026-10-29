@@ -10,5 +10,5 @@ void main() {
       statusBarIconBrightness: Brightness.dark,
     ),
   );
-  runApp(const FracttalApp());
+  runApp(const ProTrackerApp());
 }

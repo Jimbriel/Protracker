@@ -151,10 +151,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildKpiGrid() {
     final kpis = [
-      (0, 'OTs en Proceso'),
-      (0, 'OTs en Revisión'),
-      (0, 'OTs Finalizadas'),
-      (0, 'Tareas Pendientes con Atraso'),
+      (0, 'Limpiezas en proceso'),
+      (0, 'Por validar'),
+      (0, 'Completadas'),
+      (0, 'Tareas atrasadas'),
     ];
 
     return GridView.builder(
@@ -191,7 +191,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               children: [
                 Expanded(
                   child: Text(
-                    'Órdenes de Trabajo',
+                    'Limpiezas por mes',
                     style: GoogleFonts.inter(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,

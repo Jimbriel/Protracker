@@ -1,8 +1,8 @@
-name: fracttal_one
-description: "Fracttal ONE - Sistema de Gestión de Mantenimiento"
+name: protracker
+description: "PRO tracker - Control de limpieza para cocinas (demo)"
 publish_to: 'none'
 
-version: 5.5.04+1
+version: 0.1.0+1
 
 environment:
   sdk: ^3.10.4

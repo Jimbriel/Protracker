@@ -38,12 +38,11 @@ El código base viene de un clon visual de Fracttal ONE (sistema de mantenimient
 
 Reutilizable: tema visual, drawer, tarjetas de KPI, gráficas y estructura de navegación.
 
+Fase 0 completada (plataformas web y Android, renombrado, limpieza de Fracttal, `flutter analyze` y `flutter test` sin errores).
+
 Deuda técnica conocida:
 
-- Sin carpetas de plataforma (`android/`, `web/`).
-- El paquete, la clase `FracttalApp` y el widget `FracttalLogo` conservan el nombre original.
-- `test/widget_test.dart` está roto (importa `fracttal_one` y espera el texto "Siguiente").
-- Contenido de Fracttal (órdenes de trabajo, activos) que no aplica al proyecto.
+- El dashboard y el login siguen con datos y textos de ejemplo (gráfica `OtChartCard`); se reemplazan en las Fases 2 y 4.
 
 ## Plataforma de presentación
 
@@ -53,10 +52,10 @@ Deuda técnica conocida:
 ## Plan de actividades
 
 ### Fase 0: base
-- [ ] Habilitar plataformas web y Android (`flutter create .`).
-- [ ] Renombrar el paquete y las clases a protracker.
-- [ ] Reemplazar este README por defecto (hecho) y arreglar la prueba rota.
-- [ ] Quitar los elementos de Fracttal que no aplican.
+- [x] Habilitar plataformas web y Android (`flutter create .`).
+- [x] Renombrar el paquete y las clases a protracker.
+- [x] Reemplazar este README por defecto (hecho) y arreglar la prueba rota.
+- [x] Quitar los elementos de Fracttal que no aplican.
 
 ### Fase 1: datos simulados
 - [ ] Modelos: usuario (con rol), turno, área, equipo, actividad, checklist, químico y registro de limpieza.
