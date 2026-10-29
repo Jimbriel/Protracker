@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../core/app_colors.dart';
+import '../data/demo_store.dart';
+import '../models/cleaning_models.dart';
 import '../widgets/app_bar_actions.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/kpi_card.dart';
@@ -150,11 +152,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildKpiGrid() {
+    final store = DemoStore.instance;
     final kpis = [
-      (0, 'Limpiezas en proceso'),
-      (0, 'Por validar'),
-      (0, 'Completadas'),
-      (0, 'Tareas atrasadas'),
+      (store.countByStatus(ActivityStatus.inProgress), 'Limpiezas en proceso'),
+      (store.countByStatus(ActivityStatus.completed), 'Por validar'),
+      (store.countByStatus(ActivityStatus.validated), 'Completadas'),
+      (store.overdueCount(DateTime.now()), 'Tareas atrasadas'),
     ];
 
     return GridView.builder(
